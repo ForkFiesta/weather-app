@@ -1,6 +1,12 @@
 import { showPosition } from "./get-location.js";
 import { getWeather } from "./get-weather.js";
 
+import { getImages } from "./unsplash-fetch.js";
+
+//Style APP Components
+const leftSide = document.querySelector(".left-side");
+
+// Today Weather Components
 const todayName = document.querySelector(".date-dayName");
 const todayDate = document.querySelector(".date-day");
 const locationElement = document.querySelector(".location");
@@ -11,6 +17,7 @@ const precipitation = document.querySelector("#preciprob");
 const humidity = document.querySelector("#humidity");
 const windSpeed = document.querySelector("#windSpeed");
 
+// Week Forecast Components
 const dayOnetext = document.querySelector("#dayOne>.day-name");
 const dayOneTemp = document.querySelector("#dayOne>.day-temp");
 const dayTwotext = document.querySelector("#dayTwo>.day-name");
@@ -26,6 +33,11 @@ export async function DOMinteractor() {
     try {
       const userlocation = await showPosition(); // Await the result here
       locationElement.innerHTML = userlocation.city; // Access city after resolving
+      const photo = await getImages(userlocation.city);
+      const backgroundImage_URL = photo.rawImageUrl;
+      leftSide.style.backgroundImage = `url("${backgroundImage_URL}")`;
+
+      console.log(`Background Image URL: ${backgroundImage_URL}`);
       return userlocation;
     } catch (error) {
       console.error("Error getting user location:", error);
