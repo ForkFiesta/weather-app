@@ -1,9 +1,11 @@
 import "./style.css";
+import { DOMinteractor } from "./DOMinteraction.js";
 import { showPosition } from "./get-location.js";
 import { getWeather } from "./get-weather.js";
 const feather = require("feather-icons");
 feather.replace();
 
+DOMinteractor();
 //Gets city and State from User
 
 // async function logCity() {
@@ -16,20 +18,20 @@ feather.replace();
 // }
 // logCity();
 
-async function logWeatherArray() {
-  try {
-    const myArray = await getWeather();
-    myArray.forEach((day) => {
-      console.log(
-        day.dayOfWeek,
-        day.conditions,
-        day.description,
-        day.temperature
-      );
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
+// async function logWeatherArray() {
+//   try {
+//     const myArray = await getWeather();
+//     myArray.forEach((day) => {
+//       console.log(
+//         day.dayOfWeek,
+//         day.conditions,
+//         day.description,
+//         day.temperature
+//       );
+//     });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
-logWeatherArray();
+// logWeatherArray();

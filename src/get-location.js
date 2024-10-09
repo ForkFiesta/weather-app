@@ -19,9 +19,13 @@ async function getLocation(latitude, longitude) {
     console.log(data);
 
     const zipcode = data.results[0].components.postcode;
+    const city = data.results[0].components.city;
+    const state = data.results[0].components.state;
 
     return {
       zipcode,
+      city,
+      state,
     };
   } catch (error) {
     console.error(error);
@@ -33,8 +37,8 @@ async function showPosition() {
     const position = await getPosition();
     const latitude = position.coords.latitude.toString();
     const longitude = position.coords.longitude.toString();
-    const zipcode = await getLocation(latitude, longitude);
-    return zipcode;
+    const location = await getLocation(latitude, longitude);
+    return location;
   } catch (error) {
     console.error(error); // Handle any errors
   }

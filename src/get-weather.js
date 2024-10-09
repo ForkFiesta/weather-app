@@ -44,7 +44,7 @@ export async function getWeather(postcode) {
         description: data.days[index].description,
         conditions: data.days[index].conditions,
         humidity: data.days[index].humidity,
-        windSpeed: data.days[index].humidity,
+        windSpeed: data.days[index].windspeed,
       };
     }
 
