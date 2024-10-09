@@ -3,19 +3,41 @@ function getPosition() {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
+// results[0].components.city
+async function getLocation(latitude, longitude) {
+  const URL = "https://api.opencagedata.com/geocode";
+  const VERSION = "v1";
+  const FORMAT = "json";
+  const key = process.env.API_KEY;
+  const q = `${latitude}+${longitude}`;
+  //   console.log(`q is ${q}`);
+  try {
+    const response = await fetch(
+      `${URL}/${VERSION}/${FORMAT}?key=${key}&q=${q}`
+    );
+    const data = await response.json();
+    console.log(data);
+
+    const zipcode = data.results[0].components.postcode;
+
+    return {
+      zipcode,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 async function showPosition() {
   try {
     const position = await getPosition();
-    const latitude = Number(position.coords.latitude);
-    const longitude = Number(position.coords.longitude);
-    const coordinates = [latitude, longitude];
-    return coordinates;
+    const latitude = position.coords.latitude.toString();
+    const longitude = position.coords.longitude.toString();
+    const zipcode = await getLocation(latitude, longitude);
+    return zipcode;
   } catch (error) {
     console.error(error); // Handle any errors
   }
 }
-
-async function getLocation() {}
 
 export { showPosition };
