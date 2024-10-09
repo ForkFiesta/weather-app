@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "feather-icons": "^4.29.2"
+    "feather-icons": "^4.29.2",
+    "unsplash-js": "^7.0.19"
   }
 }
