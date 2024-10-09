@@ -11,6 +11,15 @@ const precipitation = document.querySelector("#preciprob");
 const humidity = document.querySelector("#humidity");
 const windSpeed = document.querySelector("#windSpeed");
 
+const dayOnetext = document.querySelector("#dayOne>.day-name");
+const dayOneTemp = document.querySelector("#dayOne>.day-temp");
+const dayTwotext = document.querySelector("#dayTwo>.day-name");
+const dayTwoTemp = document.querySelector("#dayTwo>.day-temp");
+const dayThreetext = document.querySelector("#dayThree>.day-name");
+const dayThreeTemp = document.querySelector("#dayThree>.day-temp");
+const dayFourtext = document.querySelector("#dayFour>.day-name");
+const dayFourTemp = document.querySelector("#dayFour>.day-temp");
+
 export async function DOMinteractor() {
   // Function to update the location
   const updateLocation = async () => {
@@ -28,6 +37,7 @@ export async function DOMinteractor() {
     try {
       const myArray = await getWeather(zipcode); // Await the array here
       if (myArray && myArray.length > 0) {
+        console.log(myArray);
         todayName.innerHTML = myArray[0].dayOfWeek;
         todayDate.innerHTML = new Date().toLocaleDateString();
         weatherTemp.innerHTML = myArray[0].temperature;
@@ -35,6 +45,15 @@ export async function DOMinteractor() {
         precipitation.innerHTML = myArray[0].precipitation + " %";
         humidity.innerHTML = myArray[0].humidity + " %";
         windSpeed.innerHTML = myArray[0].windSpeed + " MPH";
+
+        dayOnetext.innerHTML = myArray[1].dayOfWeek.slice(0, 3);
+        dayOneTemp.innerHTML = myArray[1].temperature;
+        dayTwotext.innerHTML = myArray[2].dayOfWeek.slice(0, 3);
+        dayTwoTemp.innerHTML = myArray[2].temperature;
+        dayThreetext.innerHTML = myArray[3].dayOfWeek.slice(0, 3);
+        dayThreeTemp.innerHTML = myArray[3].temperature;
+        dayFourtext.innerHTML = myArray[4].dayOfWeek.slice(0, 3);
+        dayFourTemp.innerHTML = myArray[4].temperature;
       }
     } catch (error) {
       console.error("Error getting weather:", error);

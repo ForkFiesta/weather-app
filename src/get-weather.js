@@ -48,9 +48,19 @@ export async function getWeather(postcode) {
       };
     }
 
-    for (let i = 0; i < 4; i++) {
+    const dayIndexProcessing = (index) => {
+      if (index > 6) {
+        index = index - 7;
+      }
+      return index;
+    };
+
+    for (let i = 0; i < 5; i++) {
       //   console.log(days[date.getDay() + i]);
-      let newDay = createDaysForecast(i, days[date.getDay() + i]);
+      let newDay = createDaysForecast(
+        i,
+        days[dayIndexProcessing(date.getDay() + i)]
+      );
       weatherArray.push(newDay);
     }
 
