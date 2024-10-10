@@ -9,7 +9,7 @@
     "build": "webpack",
     "start": "webpack serve --open",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -f"
+    "deploy": "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
