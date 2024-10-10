@@ -160,11 +160,24 @@ export async function DOMinteractor() {
     return weatherArray;
   };
 
-  // Get the user's location and update the weather based on that
-  const userLocation = await updateLocation();
-  if (userLocation && userLocation.zipcode) {
-    await updateWeather(userLocation.zipcode);
-  } else {
-    console.error("Could not retrieve the user's zipcode for weather update.");
-  }
+  document.addEventListener("DOMContentLoaded", () => {
+    // Show the loading screen initially
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.style.display = "flex";
+
+    // Call your data-fetching functions, chaining them properly
+    updateLocation()
+      .then((userLocation) => {
+        // Use the returned userLocation to call updateWeather
+        return updateWeather(userLocation.zipcode);
+      })
+      .then(() => {
+        // Hide the loading screen when everything is ready
+        loadingScreen.style.display = "none";
+      })
+      .catch((error) => {
+        console.error("Error loading data:", error);
+        // Optionally, handle the error here, e.g., display an error message
+      });
+  });
 }
