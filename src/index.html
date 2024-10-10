@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raul's Weather Report</title>
+
 </head>
 
 <body>
@@ -17,7 +18,7 @@
                     <i class="location-icon" data-feather="map-pin"></i>
                     <span class="location">San Antonio</span>
                     <div class="weather-container">
-                        <i class="weather-icon" data-feather="sun"></i>
+                        <i class="weather-icon"></i>
                         <h1 class="weather-temp">86˚</h1>
                         <h3 class="weather-dec">Sunny</h3>
                     </div>
@@ -47,22 +48,22 @@
             <div class="week-container">
                 <ul class="week-list">
                     <li class="active" id="dayOne">
-                        <i class="day-icon" data-feather="sun"></i>
+                        <i class="day-icon"></i>
                         <span class="day-name">Thurs</span>
                         <span class="day-temp"></span>
                     </li>
                     <li id="dayTwo">
-                        <i class="day-icon" data-feather="cloud"></i>
+                        <i class="day-icon"></i>
                         <span class="day-name"></span>
                         <span class="day-temp"></span>
                     </li>
                     <li id="dayThree">
-                        <i class="day-icon" data-feather="cloud-snow"></i>
+                        <i class="day-icon"></i>
                         <span class="day-name"></span>
                         <span class="day-temp"></span>
                     </li>
                     <li id="dayFour">
-                        <i class="day-icon" data-feather="cloud-rain"></i>
+                        <i class="day-icon"></i>
                         <span class="day-name"></span>
                         <span class="day-temp"></span>
                     </li>
@@ -80,6 +81,18 @@
         </div>
     </div>
     <div id="loading" style="display: none;">Loading...</div>
+    <div class="modal" id="locationModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Change Location</h2>
+            <form id="locationForm">
+                <label for="location">Enter Location:</label>
+                <input type="text" name="location" id="newLocation" required />
+                <button type="submit">Update Location</button>
+            </form>
+        </div>
+        <!-- <script>feather.replace()</script> -->
+    </div>
 
 </body>
 

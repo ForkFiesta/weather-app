@@ -1,11 +1,8 @@
 import "./style.css";
 import { DOMinteractor } from "./DOMinteraction.js";
-import { showPosition } from "./get-location.js";
-import { getWeather } from "./get-weather.js";
-const feather = require("feather-icons");
-feather.replace();
 
 DOMinteractor();
+// feather.replace();
 //Gets city and State from User
 
 // async function logCity() {

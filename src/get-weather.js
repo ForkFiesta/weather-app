@@ -1,25 +1,19 @@
-export async function getWeather(postcode) {
+export async function getWeather(postcode, city = "") {
   const URL =
     "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
 
-  //   const date = new Date();
-  //   const formattedDate = date.toLocaleDateString("en-US", {
-  //     month: "2-digit",
-  //     day: "2-digit",
-  //     year: "numeric",
-  //   });
-
   const API_KEY = "BAKHF97Q6T8SSZF3YWGTB3Y62";
   console.log(API_KEY);
-
-  const location = 78041;
+  const location = city || postcode;
 
   try {
-    const response = await fetch(`${URL}${location}?key=${API_KEY}`);
-
+    const completeURL = `${URL}${location}?key=${API_KEY}&iconSet=icons1`;
+    console.log(`Fetching ${completeURL}`);
+    const response = await fetch(completeURL);
     const data = await response.json();
+    console.log(data);
 
-    const days = [
+    const daysOfWeek = [
       "Sunday",
       "Monday",
       "Tuesday",
@@ -28,46 +22,48 @@ export async function getWeather(postcode) {
       "Friday",
       "Saturday",
     ];
-    const date = new Date();
-    // const dayOfWeek = days[date.getDay()]; // Maps the number to a day
 
-    // console.log(dayOfWeek); // Output: the current day name, e.g., "Wednesday"
+    // Icon mapping
+    const iconMap = {
+      snow: "cloud-snow",
+      rain: "cloud-rain",
+      fog: "cloud",
+      wind: "wind",
+      cloudy: "cloud",
+      "partly-cloudy-day": "cloud",
+      "partly-cloudy-night": "cloud",
+      "clear-day": "sun",
+      "clear-night": "moon",
+    };
 
     const weatherArray = [];
 
+    // Function to create forecast object for each day
     function createDaysForecast(index, weekday) {
+      const dayData = data.days[index];
       return {
         dayOfWeek: weekday,
-        index: index,
-        temperature: data.days[index].temp,
-        precipitation: data.days[index].precipprob,
-        description: data.days[index].description,
-        conditions: data.days[index].conditions,
-        humidity: data.days[index].humidity,
-        windSpeed: data.days[index].windspeed,
+        temperature: dayData.temp,
+        precipitation: dayData.precipprob,
+        description: dayData.description,
+        conditions: dayData.conditions,
+        humidity: dayData.humidity,
+        windSpeed: dayData.windspeed,
+        icon: iconMap[dayData.icon] || "cloud", // Map the icon directly here
       };
     }
 
-    const dayIndexProcessing = (index) => {
-      if (index > 6) {
-        index = index - 7;
-      }
-      return index;
-    };
-
+    // Ensure days wrap correctly and add to weatherArray
+    const todayIndex = new Date().getDay();
     for (let i = 0; i < 5; i++) {
-      //   console.log(days[date.getDay() + i]);
-      let newDay = createDaysForecast(
-        i,
-        days[dayIndexProcessing(date.getDay() + i)]
-      );
+      const dayIndex = (todayIndex + i) % 7; // Wrap around the days of the week
+      const weekday = daysOfWeek[dayIndex];
+      const newDay = createDaysForecast(i, weekday);
       weatherArray.push(newDay);
     }
 
     return weatherArray;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching weather data:", error);
   }
 }
-
-// days[0].cloudcover
