@@ -246,3 +246,8 @@ today-info > div .title {
   color: #000;
   cursor: pointer;
 }
+
+.small-image {
+  height: 32px;
+  width: 32px;
+}

@@ -9,12 +9,14 @@ export async function getImages(city) {
     const result = await unsplash.search.getPhotos({
       query: `${city}`,
       page: 1,
-      perPage: 1,
+      perPage: 10,
     });
 
     const photos = result.response.results;
     if (photos.length > 0) {
-      const photo = photos[0];
+      const randomIndex = Math.floor(Math.random() * 10);
+      console.log("Random Index: ", randomIndex);
+      const photo = photos[randomIndex];
       const rawImageUrl = photo.urls.raw + "&auto=formate&fit=crop&w=675&q=80";
       const smallImageUrl = photo.urls.small;
       const regularImageUrl = photo.urls.regular;

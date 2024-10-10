@@ -1,3 +1,5 @@
+import { images } from "./import-images";
+
 export async function getWeather(postcode, city = "") {
   const URL =
     "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
@@ -49,7 +51,8 @@ export async function getWeather(postcode, city = "") {
         conditions: dayData.conditions,
         humidity: dayData.humidity,
         windSpeed: dayData.windspeed,
-        icon: iconMap[dayData.icon] || "cloud", // Map the icon directly here
+        icon: dayData.icon, // Map the icon directly here
+        url: images[`${dayData.icom}.png`],
       };
     }
 

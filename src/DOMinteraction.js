@@ -2,12 +2,16 @@ import { showPosition } from "./get-location.js";
 import { getWeather } from "./get-weather.js";
 
 import { getImages } from "./unsplash-fetch.js";
+
+import { images } from "./import-images.js";
 import feather from "feather-icons";
 
 //Style APP Components
 const leftSide = document.querySelector(".left-side");
 
-// Get modal elements
+//Get Forecast Elements
+const forecastElements = document.querySelectorAll(".day-button");
+let activeElement = document.querySelector(".active"); // Get modal elements
 const modal = document.getElementById("locationModal");
 const changeLocationButton = document.querySelector(".location-button");
 const closeButton = document.querySelector(".close-button");
@@ -97,9 +101,10 @@ export async function DOMinteractor() {
 
   // Function to update the weather
   // Function to update the weather
+  let weatherArray = [];
   const updateWeather = async (zipcode = "", city = "") => {
     try {
-      const weatherArray = await getWeather(zipcode, city);
+      weatherArray = await getWeather(zipcode, city);
       if (weatherArray && weatherArray.length > 0) {
         console.log(weatherArray);
         todayName.innerHTML = weatherArray[0].dayOfWeek;
@@ -109,23 +114,50 @@ export async function DOMinteractor() {
         precipitation.innerHTML = `${weatherArray[0].precipitation} %`;
         humidity.innerHTML = `${weatherArray[0].humidity} %`;
         windSpeed.innerHTML = `${weatherArray[0].windSpeed} MPH`;
-
-        todayIcon.removeAttribute("data-feather");
-        todayIcon.setAttribute("data-feather", weatherArray[0].icon);
+        while (todayIcon.firstChild) {
+          todayIcon.removeChild(todayIcon.firstChild);
+        }
+        const newImg = document.createElement("img");
+        newImg.src = images[weatherArray[0].icon + ".png"];
+        todayIcon.appendChild(newImg);
 
         days.forEach((day, index) => {
-          day.icon.removeAttribute("data-feather");
-          day.icon.setAttribute("data-feather", weatherArray[index + 1].icon);
+          while (day.icon.firstChild) {
+            day.icon.removeChild(day.icon.firstChild);
+          }
+          const newImg = document.createElement("img");
+          newImg.src = images[weatherArray[index + 1].icon + ".png"];
+          newImg.classList.add("small-image");
+          day.icon.appendChild(newImg);
           day.text.innerHTML = weatherArray[index + 1].dayOfWeek.slice(0, 3);
           day.temp.innerHTML = weatherArray[index + 1].temperature;
         });
 
+        forecastElements.forEach((element, index) => {
+          element.addEventListener("click", () => {
+            // Remove the 'active' class from the currently active element
+            activeElement.classList.remove("active");
+
+            // Set the new active element and add the 'active' class
+            element.classList.add("active");
+            activeElement = element;
+
+            // Update the precipitation and humidity based on the selected day
+            const selectedDayWeather = weatherArray[index + 1]; // Adjusted index for forecast data
+            if (selectedDayWeather) {
+              precipitation.innerHTML = `${selectedDayWeather.precipitation} %`;
+              humidity.innerHTML = `${selectedDayWeather.humidity} %`;
+              windSpeed.innerHTML = `${selectedDayWeather.windSpeed} MPH`;
+            }
+          });
+        });
+
         // Add the timeout here so it applies on every weather update
-        feather.replace();
       }
     } catch (error) {
       console.error("Error getting weather:", error);
     }
+    return weatherArray;
   };
 
   // Get the user's location and update the weather based on that
